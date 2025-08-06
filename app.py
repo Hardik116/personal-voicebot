@@ -5,24 +5,28 @@ import datetime
 import re
 import google.generativeai as genai
 
+# Create Flask app
 app = Flask(__name__)
 CORS(app)
 
-# ✅ Load Gemini API key from environment variable (recommended over hardcoding)
-GEMINI_API_KEY =  os.getenv("GEMINI_API_KEY")
+# Load Gemini API key from environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-
-
-with open("prompt.txt", "r", encoding="utf-8") as file:
-    prompt_text = file.read()
-
-print(prompt_text) 
+# Read prompt from file
+try:
+    with open("prompt.txt", "r", encoding="utf-8") as file:
+        prompt_text = file.read()
+except FileNotFoundError:
+    prompt_text = ""
+    print("[Warning] prompt.txt not found!")
 
 CHARACTER_SKETCH = prompt_text
+
 
 def sanitize_input(text):
     """Remove non-printable characters."""
     return re.sub(r'[^\x20-\x7E]', '', text)
+
 
 def get_gemini_sdk_response(prompt):
     """Generate response using Gemini SDK."""
@@ -35,9 +39,11 @@ def get_gemini_sdk_response(prompt):
         print(f"[Gemini SDK Error] {e}")
         return "Sorry, something went wrong. Please try again later."
 
+
 @app.route('/')
 def index():
-    return render_template('index.html')  # Make sure templates/index.html exists
+    return render_template('index.html')  # Ensure templates/index.html exists
+
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -58,19 +64,26 @@ def chat():
         'timestamp': datetime.datetime.now().isoformat()
     })
 
+
 @app.route('/api/health', methods=['GET'])
 def health():
     return jsonify({'status': 'healthy', 'timestamp': datetime.datetime.now().isoformat()})
+
 
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({'error': 'Endpoint not found'}), 404
 
+
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({'error': 'Internal server error'}), 500
 
+
+# Ensure folders exist
+os.makedirs('templates', exist_ok=True)
+os.makedirs('static', exist_ok=True)
+
+# Run locally only if executed directly
 if __name__ == '__main__':
-    os.makedirs('templates', exist_ok=True)
-    os.makedirs('static', exist_ok=True)
     app.run(debug=True, host='0.0.0.0', port=5000)
