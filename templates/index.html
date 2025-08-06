@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hardik's Voice Bot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>personal Voice Bot</h1>
+    </div>
+
+    <div class="status ready" id="status">Ask your questions below.</div>
+
+    <div class="chat-area" id="chatArea">
+      <div class="message bot-message">
+        Hi! I'm Hardik, feel free to ask anyting about me.
+      </div>
+    </div>
+
+    <div class="text-input-section">
+      <div class="text-input-container">
+        <input type="text" class="text-input" id="textInput" placeholder="Type your question here..." />
+        <!-- <button class="btn-icon" id="startBtn">🎤</button>
+        <button class="btn-icon" id="stopBtn" disabled>⏹️</button> -->
+        <button class="btn btn-primary" id="sendBtn">Send</button>
+        <button class="btn btn-warning" id="stopVoiceBtn">stop AI voice</button>
+      </div>
+    </div>
+
+    <div class="voice-controls">
+      <button class="btn btn-secondary" id="clearBtn">🗑️ Clear Chat</button>
+    </div>
+
+    <div class="example-questions">
+      <h3>💡 Try asking me these questions:</h3>
+      <ul>
+        <li onclick="askQuestion(this.textContent)">What should we know about your life story in a few sentences?</li>
+        <li onclick="askQuestion(this.textContent)">What's your number one superpower?</li>
+        <li onclick="askQuestion(this.textContent)">What are the top 3 areas you'd like to grow in?</li>
+        <li onclick="askQuestion(this.textContent)">What misconception do people have about you?</li>
+        <li onclick="askQuestion(this.textContent)">How do you push your boundaries and limits?</li>
+        <li onclick="askQuestion(this.textContent)">What drives your curiosity?</li>
+        <li onclick="askQuestion(this.textContent)">How do you handle uncertainty?</li>
+        <li onclick="askQuestion(this.textContent)">What would you like humans to understand about AI?</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
